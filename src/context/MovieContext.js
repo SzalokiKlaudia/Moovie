@@ -13,6 +13,11 @@ export const MovieDataProvider = ({ children }) => {
     const apiKey = 'd177b1faa31eb756e208e96f34fbeb53'
     const [ allMovies, setAllMovies ] = useState([])
 
+    const [genres, setGenres] = useState(() => {
+        const stored = localStorage.getItem("genres")
+        return stored ? JSON.parse(stored) : null
+      })
+
     const getMovies = async (page) => {//oldalanként
 
         try{
@@ -38,7 +43,6 @@ export const MovieDataProvider = ({ children }) => {
                         poster_path: movie.poster_path ?
                         'https://image.tmdb.org/t/p/w500' + movie.poster_path :
                         null
-
                     }
                    
                 })
@@ -68,28 +72,28 @@ export const MovieDataProvider = ({ children }) => {
 
     }
 
+      useEffect(() => {
+        async function getAllGenres(){
+    
+            if(!genres){
+                const resp = await myAxios.get(`/genre/movie/list?api_key=${apiKey}&language=en`)
+                setGenres(resp.data.genres)
+                localStorage.setItem("genres", JSON.stringify(resp.data.genres))
+    
+            }
+    
+        }
+    
+        getAllGenres()
+
+      })
+
 
    useEffect(() => {
 
-    async function getAllGenres(){
-        const storedGenres = localStorage.getItem("genres")
-
-        if(!storedGenres){
-            const resp = await myAxios.get(`/genre/movie/list?api_key=${apiKey}&language=en`)
-            localStorage.setItem("genres", JSON.stringify(resp.data.genres))
-
-        }
-
-    }
-
-    getAllGenres()
     getMovies(currentPage)
  
-
    },[currentPage])
-
-
-
 
     return (
         <MovieDataContext.Provider value={{ getMovies, moviesData, totalPages, currentPage, setCurrentPage,  loading, setLoading,error, setError,allMovies  }}>
