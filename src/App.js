@@ -7,7 +7,7 @@ import Box from './components/Box.js';
 import MovieList from './components/MovieList.js';
 import Pagination from './components/Pagination.js';
 import MovieDetail from './components/MovieDetail.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useMovieDataContext from './context/MovieContext.js';
 import WatchedSummary from './components/WatchedSummary.js';
 import WatchedMovies from './components/WatchedMovies.js';
@@ -18,7 +18,13 @@ function App() {
   const [ selectedMovie, setSelectedMovie ] = useState({})
   const [ searchValue, setSearchValue ] = useState('')
   const [ results, setResults ] = useState(0)
-  const [ watched, setWatched ] = useState([])
+  //const [ watched, setWatched ] = useState([])
+
+    const [ watched, setWatched ] = useState(function () {
+      const stored = localStorage.getItem('watched')
+      return  stored ? JSON.parse(stored) : []
+    })
+
   
   function handleClose(){
     setSelectedId(null)
@@ -35,7 +41,12 @@ function App() {
 
   }
 
-  console.log(watched)
+  useEffect(
+    function () {
+      localStorage.setItem('watched', JSON.stringify(watched))
+    
+  },
+  [watched])
 
 
   return (
