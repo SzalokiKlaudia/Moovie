@@ -72,7 +72,7 @@ export const MovieDataProvider = ({ children }) => {
 
     }
 
-      useEffect(() => {
+    useEffect(() => {
         async function getAllGenres(){
     
             if(!genres){
@@ -86,7 +86,7 @@ export const MovieDataProvider = ({ children }) => {
     
         getAllGenres()
 
-      })
+    },[genres])
 
 
    useEffect(() => {

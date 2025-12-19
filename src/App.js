@@ -18,8 +18,7 @@ function App() {
   const [ selectedMovie, setSelectedMovie ] = useState({})
   const [ searchValue, setSearchValue ] = useState('')
   const [ results, setResults ] = useState(0)
-  //const [ watched, setWatched ] = useState([])
-
+  
     const [ watched, setWatched ] = useState(function () {
       const stored = localStorage.getItem('watched')
       return  stored ? JSON.parse(stored) : []

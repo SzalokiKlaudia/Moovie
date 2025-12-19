@@ -22,7 +22,7 @@ function Search({ setSearchValue }){
         document.addEventListener('keydown',callback)
         return () => document.addEventListener('keydown',callback)
     
-      },[])
+      },[setInputValue])
 
     return(
         <div className="flex">
